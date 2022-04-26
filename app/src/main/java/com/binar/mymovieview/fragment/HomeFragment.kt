@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.binar.mymovieview.R
 import com.binar.mymovieview.adapter.MainAdapter
 import com.binar.mymovieview.databinding.FragmentHomeBinding
 import com.binar.mymovieview.mvvm.MovieViewModel

@@ -11,8 +11,12 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.binar.mymovieview.data.User
 import com.binar.mymovieview.room.AplicationDB
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 class UserAuthViewModel(app: Application): AndroidViewModel(app) {
@@ -46,9 +50,6 @@ class UserAuthViewModel(app: Application): AndroidViewModel(app) {
         return _validation
     }
 
-    private fun runOnUiThread(action: Runnable) {
-        messageHandler.post(action)
-    }
 
     fun logout(){
         editor.clear()
@@ -61,10 +62,10 @@ class UserAuthViewModel(app: Application): AndroidViewModel(app) {
         val passwordResult = StringBuffer()
             val usernameResult = StringBuffer()
         mDB = AplicationDB.getInstance(context)
-        executor.execute {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = mDB?.userDao()?.getUsername(inEmail.value)
             Log.d("this", user.toString())
-            runOnUiThread {
+            runBlocking(Dispatchers.Main) {
                 user?.forEach {
                    emailResult.append(it.email)
                    passwordResult.append(it.password)
@@ -92,10 +93,10 @@ class UserAuthViewModel(app: Application): AndroidViewModel(app) {
       if (user.password != confirmPassword) {
                 Toast.makeText(context, "Confirmation Password Error", Toast.LENGTH_SHORT).show()
             } else {
-          executor.execute {
+          viewModelScope.launch(Dispatchers.IO){
               Log.d("auth", "testing")
               val result = mDB?.userDao()?.addUser(user)
-              runOnUiThread {
+              runBlocking(Dispatchers.Main){
                   if (result != 0. toLong()){
                       Toast.makeText(context,"Register Success",Toast.LENGTH_SHORT).show()
                       registervalidation.postValue(1)
@@ -120,7 +121,7 @@ class UserAuthViewModel(app: Application): AndroidViewModel(app) {
     }
     fun updateUserData(user:User){
         mDB = AplicationDB.getInstance(context)
-        executor.execute {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = mDB?.userDao()?.updateData(
                 username = user.username,
                 email = email.value,
@@ -128,7 +129,7 @@ class UserAuthViewModel(app: Application): AndroidViewModel(app) {
                 fullname = user.fullName,
                 address = user.address
             )
-            runOnUiThread {
+            runBlocking(Dispatchers.Main) {
                 if (result != 0){
                     Toast.makeText(context,"Update Success",Toast.LENGTH_SHORT).show()
                     getUserData()
@@ -148,10 +149,10 @@ class UserAuthViewModel(app: Application): AndroidViewModel(app) {
         val birthdateResult = StringBuffer()
         val addressResult = StringBuffer()
         mDB = AplicationDB.getInstance(context)
-        executor.execute {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = mDB?.userDao()?.getUsername(email.value)
             Log.d("this", user.toString())
-            runOnUiThread {
+            runBlocking(Dispatchers.Main) {
                 user?.forEach {
                     usernameResult.append(it.username)
                     fullnameResult.append(it.fullName)
