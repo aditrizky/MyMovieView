@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment2"
-        android:name="com.binar.mymovieview.fragment.HomeFragment"
+        android:name="com.binar.mymovieview.ui.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment2_to_detailFragment"
@@ -34,10 +34,13 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/homeFragment2"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment2_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.binar.mymovieview.fragment.ProfileFragment"
+        android:name="com.binar.mymovieview.ui.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
@@ -51,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.binar.mymovieview.fragment.LoginFragment"
+        android:name="com.binar.mymovieview.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -75,16 +78,17 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.binar.mymovieview.fragment.DetailFragment"
+        android:name="com.binar.mymovieview.ui.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="detail"
-            app:argType="com.binar.mymovieview.response.Result" />
+            app:argType="com.binar.mymovieview.response.Result"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.binar.mymovieview.fragment.RegisterFragment"
+        android:name="com.binar.mymovieview.ui.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -99,7 +103,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.binar.mymovieview.fragment.SplashFragment"
+        android:name="com.binar.mymovieview.ui.splashscreen.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -120,5 +124,14 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.binar.mymovieview.ui.favorite.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 </navigation>

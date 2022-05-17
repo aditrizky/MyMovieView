@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -30,10 +30,10 @@
         android:id="@+id/update_button"
         android:layout_width="326dp"
         android:layout_height="50dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="136dp"
         android:text="@string/update"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textmaterial"
         tools:ignore="TextContrastCheck" />
@@ -115,8 +115,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="321dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="160dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_text_view">
 
@@ -127,6 +128,18 @@
             android:hint="@string/username"
             android:inputType="textPersonName"
             tools:ignore="TextContrastCheck" />
+
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/profile_imageView"
+        android:layout_width="105dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_abstract_user_flat_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

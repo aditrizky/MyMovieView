@@ -1,5 +1,6 @@
-package com.binar.mymovieview.data
+package com.binar.mymovieview.data.local.userauth
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,5 +16,6 @@ data class User(
     var password : String? = null,
     var fullName : String? = null,
     var birthDate: String? = null,
-    var address  : String? = null
+    var address  : String? = null,
+    var imagePath: String? = null
 ): Parcelable

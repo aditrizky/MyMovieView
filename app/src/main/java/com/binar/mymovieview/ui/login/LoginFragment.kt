@@ -1,4 +1,4 @@
-package com.binar.mymovieview.fragment
+package com.binar.mymovieview.ui.login
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,14 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.binar.mymovieview.databinding.FragmentLoginBinding
-import com.binar.mymovieview.mvvm.UserAuthViewModel
+import com.binar.mymovieview.ui.ViewModelFactory
+import com.binar.mymovieview.ui.register.RegisterViewModel
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
-    private val viewModel : UserAuthViewModel by activityViewModels()
+    lateinit var loginViewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,15 +31,16 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getUserData()
+        val factory = ViewModelFactory(view.context)
+        loginViewModel= ViewModelProvider(requireActivity(),factory)[LoginViewModel::class.java]
+
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditTextText.text.toString()
             val password = binding.passwordEditText.text.toString()
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
                 Toast.makeText(requireContext(),"Empty Fields",Toast.LENGTH_SHORT).show()
             }else{
-                viewModel.getInputan(email,password)
-                viewModel.loginAuth()
+                loginViewModel.authLogin(email,password)
             }
         }
         binding.toCreateTextView.setOnClickListener {
@@ -47,11 +50,14 @@ class LoginFragment : Fragment() {
 
     }
     private fun navigateUi(){
-        viewModel.getvalidation().observe(viewLifecycleOwner){
-            if(it!= 0){
+        loginViewModel.result().observe(viewLifecycleOwner){
+            if(it==true){
+                Toast.makeText(requireActivity(),"Login Success",Toast.LENGTH_SHORT).show()
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment2())
                 Log.d("login", "testing berhasil $it")
+                loginViewModel.reset()
             }else{
+                Toast.makeText(requireActivity(),"Login Failed",Toast.LENGTH_SHORT).show()
                 Log.d("login", "testing $it")
             }
         }

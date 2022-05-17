@@ -1,11 +1,10 @@
-package com.binar.mymovieview.adapter
+package com.binar.mymovieview.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.binar.mymovieview.databinding.MovieItemBinding
-import com.binar.mymovieview.fragment.HomeFragmentDirections
 import com.binar.mymovieview.response.Result
 import com.bumptech.glide.Glide
 
