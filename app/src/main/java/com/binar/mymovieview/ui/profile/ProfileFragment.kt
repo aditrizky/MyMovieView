@@ -30,6 +30,7 @@ import com.binar.mymovieview.databinding.FragmentProfileBinding
 import com.binar.mymovieview.ui.ViewModelFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 
@@ -113,15 +114,17 @@ class ProfileFragment : Fragment() {
             if (it.address != "null"){
                 binding.addressEditText.setText(it.address.toString())
             }
-            if (it.imagePath != "null"){
-                imagepath=it.imagePath
-                Glide.with(requireActivity())
-                    .load(it.imagePath)
-                    .apply(RequestOptions.centerCropTransform())
-                    .error(R.drawable.ic_launcher_background)
-                    .into(binding.profileImageView)
+            if (imagepath == null) {
+                if (it.imagePath != "null") {
+                    imagepath = it.imagePath
+                    Glide.with(requireActivity())
+                        .load(imagepath)
+                        .apply(RequestOptions.centerCropTransform())
+                        .error(R.drawable.ic_launcher_background)
+                        .into(binding.profileImageView)
 
-                Log.d("tesing",it.imagePath.toString())
+                    Log.d("tesing", it.imagePath.toString())
+                }
             }
         }
 
@@ -260,8 +263,11 @@ class ProfileFragment : Fragment() {
 
     private fun handleCameraImage(intent: Intent?) {
        bitmap = intent?.extras?.get("data") as Bitmap
-        binding.profileImageView.setImageBitmap(bitmap)
+        val result = viewModel.bitmapToUri(bitmap!!)
+        imagepath=result.toString()
+        binding.profileImageView.setImageURI(imagepath!!.toUri())
         Log.d("tesinggg",bitmap.toString())
     }
+
 
 }

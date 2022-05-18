@@ -1,5 +1,7 @@
 package com.binar.mymovieview.ui.profile
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.*
 import com.binar.mymovieview.data.local.userauth.User
@@ -37,6 +39,10 @@ class ProfileViewModel(private val repository: UserRepository): ViewModel() {
         viewModelScope.launch {
             repository.clearDataStore()
         }
+    }
+
+    fun bitmapToUri(bitmap: Bitmap):Uri{
+     return repository.getImageUriFromBitmap(bitmap)
     }
 
 

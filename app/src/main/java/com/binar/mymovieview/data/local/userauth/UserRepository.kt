@@ -2,12 +2,16 @@ package com.binar.mymovieview.data.local.userauth
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.binar.mymovieview.data.local.AplicationDB
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.io.ByteArrayOutputStream
 
 class UserRepository(private val userDao: UserDao, private val context: Context) {
 
@@ -86,6 +90,12 @@ class UserRepository(private val userDao: UserDao, private val context: Context)
         context.prefDataStore.edit {
             it.clear()
         }
+    }
+    fun getImageUriFromBitmap(bitmap: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
     }
 
 
