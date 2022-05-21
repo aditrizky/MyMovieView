@@ -15,7 +15,7 @@ interface UserDao {
     @Query("UPDATE User SET username= :username ,fullName = :fullname ,birthDate= :birthdate ,address = :address,imagePath= :path WHERE email= :email")
     suspend fun updateData(email:String?= null, username:String?= null,birthdate:String?= null,fullname:String?= null,address:String?= null,path:String?= null) : Int
 
-    @Query("SELECT * FROM user WHERE username= :username")
-    suspend fun getAllData(username: String?=null): User
+    @Query("SELECT * FROM user WHERE email= :email")
+    suspend fun getAllData(email: String?=null): User
 
 }

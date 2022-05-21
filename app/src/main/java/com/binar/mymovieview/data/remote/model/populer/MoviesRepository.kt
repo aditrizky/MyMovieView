@@ -1,6 +1,6 @@
 package com.binar.mymovieview.data.remote.model.populer
 
-import com.binar.mymovieview.response.Result
+import com.binar.mymovieview.data.remote.model.populer.model.Result
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 class MoviesRepository constructor(private  val moviesRemoteDataSource: MoviesRemoteDataSource) {

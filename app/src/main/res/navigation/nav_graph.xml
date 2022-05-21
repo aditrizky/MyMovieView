@@ -83,7 +83,7 @@
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="detail"
-            app:argType="com.binar.mymovieview.response.Result"
+            app:argType="com.binar.mymovieview.data.remote.model.populer.model.Result"
             app:nullable="true" />
     </fragment>
     <fragment

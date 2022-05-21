@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+
 import androidx.navigation.fragment.navArgs
 import com.binar.mymovieview.data.local.favorite.FavoriteMovie
 import com.binar.mymovieview.databinding.FragmentDetailBinding
-import com.binar.mymovieview.ui.FavoriteMovieViewModelFactory
 import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment() {
     val args : DetailFragmentArgs by navArgs()
     private var _binding: FragmentDetailBinding? = null
     private val binding: FragmentDetailBinding get() = _binding!!
-    lateinit var viewModel : DetailViewModel
+    private val viewModel : DetailViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,8 +29,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = FavoriteMovieViewModelFactory(view.context)
-        viewModel= ViewModelProvider(requireActivity(),factory)[DetailViewModel::class.java]
+
 
         Glide.with(requireView())
             .load("https://image.tmdb.org/t/p/original/"+args.detail?.backdropPath)

@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class DetailViewModel(private val repository: FavoriteRepository):ViewModel() {
+
     val addvalidation : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     fun result(): LiveData<Boolean> {

@@ -1,6 +1,6 @@
 package com.binar.mymovieview.service
 
-import com.binar.mymovieview.response.GetMovieResponse
+import com.binar.mymovieview.data.remote.model.populer.model.GetMovieResponse
 import retrofit2.Response
 import retrofit2.http.GET
 

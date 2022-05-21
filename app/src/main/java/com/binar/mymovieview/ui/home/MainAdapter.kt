@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.binar.mymovieview.databinding.MovieItemBinding
-import com.binar.mymovieview.response.Result
+import com.binar.mymovieview.data.remote.model.populer.model.Result
 import com.bumptech.glide.Glide
 
 class MainAdapter (private val item : List<Result>) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {

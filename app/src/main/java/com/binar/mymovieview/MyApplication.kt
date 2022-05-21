@@ -1,14 +1,34 @@
 package com.binar.mymovieview
 
 import android.app.Application
-import android.content.Context
-import com.binar.mymovieview.data.local.userauth.UserRepository
-import com.binar.mymovieview.data.remote.model.populer.MoviesRepository
-import com.binar.mymovieview.data.remote.model.populer.MoviesRemoteDataSource
+import com.binar.mymovieview.di.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import org.koin.android.ext.koin.androidContext
 
-class MyApplication: Application() {
-    private val remoteDataSource by lazy { MoviesRemoteDataSource() }
-    val repository by lazy { MoviesRepository(remoteDataSource) }
+import org.koin.core.context.startKoin
+
+
+@DelicateCoroutinesApi
+class MyApplication : Application() {
+    /* private val remoteDataSource by lazy { MoviesRemoteDataSource() }
+     val repository by lazy { MoviesRepository(remoteDataSource) }*/
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@MyApplication)
+            modules(
+                listOf(
+                    localModule,
+                    networkModul,
+                    repositoryModule,
+                    useCaseModule,
+                    viewModelModule,
+                    dataStoreModule,
+                    imageHelperModule
+                )
+            )
+        }
+    }
 
 
 }

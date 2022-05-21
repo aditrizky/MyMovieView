@@ -22,7 +22,7 @@ class RegisterViewModel(private val repository: UserRepository):ViewModel() {
         registervalidation.postValue(false)
     }
 
-    fun addUser(user: User,confirmPassword:String){
+    fun addUser(user: User){
         viewModelScope.launch(Dispatchers.IO) {
            val result= repository.registerUser(user)
           runBlocking(Dispatchers.Main) {

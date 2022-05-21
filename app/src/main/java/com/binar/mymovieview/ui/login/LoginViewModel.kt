@@ -1,15 +1,17 @@
 package com.binar.mymovieview.ui.login
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.binar.mymovieview.data.local.userauth.UserDataStoreManager
 import com.binar.mymovieview.data.local.userauth.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class LoginViewModel(private val repository: UserRepository): ViewModel() {
+class LoginViewModel(private val repository: UserRepository,private val dataStoreManager: UserDataStoreManager): ViewModel() {
 
     val loginValidation : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
@@ -36,8 +38,8 @@ class LoginViewModel(private val repository: UserRepository): ViewModel() {
                     if (email == emailResult.toString() && password == passwordResult.toString()) {
                         loginValidation.value = true
                         viewModelScope.launch {
-                            repository.setUsername(usernameResult.toString())
-                            repository.setEmail(emailResult.toString())
+                            dataStoreManager.setEmail(email)
+                           dataStoreManager.setUsername(result.username.toString())
                         }
 
                     }

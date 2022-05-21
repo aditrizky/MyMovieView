@@ -7,7 +7,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -22,26 +21,24 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.binar.mymovieview.R
 import com.binar.mymovieview.data.local.userauth.User
 import com.binar.mymovieview.databinding.FragmentProfileBinding
-import com.binar.mymovieview.ui.ViewModelFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import java.io.ByteArrayOutputStream
-import java.io.File
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding: FragmentProfileBinding get() = _binding!!
-    lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModel()
     private var usernameValue = "default"
-    var date :Any?=null
-    var imagepath :String?=null
-    var bitmap: Bitmap?=null
+    var date: Any? = null
+    var imagepath: String? = null
+    var bitmap: Bitmap? = null
 
     private val REQUEST_CODE_PERMISSION = 100
 
@@ -54,9 +51,9 @@ class ProfileFragment : Fragment() {
         }
     private val galleryResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
-            imagepath=result.toString()
+            imagepath = result.toString()
             binding.profileImageView.setImageURI(imagepath!!.toUri())
-            Log.d("tesingg",result.toString())
+            Log.d("tesingg", result.toString())
 
         }
 
@@ -72,46 +69,48 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel= ViewModelProvider(requireActivity(),factory)[ProfileViewModel::class.java]
         setUsername()
         setField()
         binding.logoutButton.setOnClickListener {
-        logOut()
+            logOut()
         }
 
         //edit text listerner
-        binding.textmaterial.setEndIconOnClickListener{
-        calendarCreate()
+        binding.textmaterial.setEndIconOnClickListener {
+            calendarCreate()
         }
 
         binding.updateButton.setOnClickListener {
             update()
+            Log.d("test","update test")
+
         }
         binding.profileImageView.setOnClickListener {
             checkingPermissions()
         }
     }
-    private fun setUsername(){
-        viewModel.getUsername().observe(viewLifecycleOwner){
-            usernameValue=it
+
+    private fun setUsername() {
+        viewModel.getEmail().observe(viewLifecycleOwner) {
+            usernameValue = it
             viewModel.getAllData(it)
         }
     }
-    private fun setField(){
-        viewModel.resultUser().observe(viewLifecycleOwner){
-            Log.d("usernamecakk",it.toString())
-            if (it.username !="null"){
+
+    private fun setField() {
+        viewModel.resultUser().observe(viewLifecycleOwner) {
+            Log.d("usernamecakk", it.toString())
+            if (it.username != "null") {
                 binding.usernameEditTextText.setText(it.username.toString())
             }
-            if (it.fullName != "null"){
+            if (it.fullName != "null") {
                 binding.fullnamelEditTextText.setText(it.fullName)
             }
-            if (it.birthDate != "null"){
-                date=it.birthDate
+            if (it.birthDate != "null") {
+                date = it.birthDate
                 binding.birthDateEditText.setText(it.birthDate.toString())
             }
-            if (it.address != "null"){
+            if (it.address != "null") {
                 binding.addressEditText.setText(it.address.toString())
             }
             if (imagepath == null) {
@@ -131,26 +130,26 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun calendarCreate(){
+    private fun calendarCreate() {
         //calender
         val calender = Calendar.getInstance()
         val year = calender.get(Calendar.YEAR)
         val month = calender.get(Calendar.MONTH)
-        val day =calender.get(Calendar.DAY_OF_MONTH)
+        val day = calender.get(Calendar.DAY_OF_MONTH)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val calendarShow =  DatePickerDialog(requireActivity(), {
-                    view, mYear:Int, mMonth: Int, mDay: Int ->
-                binding.birthDateEditText.setText(mDay.toString()+"-"+(mMonth+1).toString()+"-"+mYear.toString())
-                Log.d("profile",month.toString())
-                date = mDay.toString()+"-"+(mMonth+1).toString()+"-"+mYear.toString()
-            },year,month,day)
+            val calendarShow =
+                DatePickerDialog(requireActivity(), { view, mYear: Int, mMonth: Int, mDay: Int ->
+                    binding.birthDateEditText.setText(mDay.toString() + "-" + (mMonth + 1).toString() + "-" + mYear.toString())
+                    Log.d("profile", month.toString())
+                    date = mDay.toString() + "-" + (mMonth + 1).toString() + "-" + mYear.toString()
+                }, year, month, day)
             calendarShow.show()
         } else {
-            date=binding.birthDateEditText.text.toString()
+            date = binding.birthDateEditText.text.toString()
         }
     }
 
-    private fun logOut(){
+    private fun logOut() {
         AlertDialog.Builder(context).setPositiveButton("Yes") { _, _ ->
             viewModel.logout()
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
@@ -164,7 +163,7 @@ class ProfileFragment : Fragment() {
             .create().show()
     }
 
-    private fun update(){
+    private fun update() {
         val objectUser = User(
             username = binding.usernameEditTextText.text.toString(),
             fullName = binding.fullnamelEditTextText.text.toString(),
@@ -177,18 +176,18 @@ class ProfileFragment : Fragment() {
         viewModel.getEmail().observe(viewLifecycleOwner){
             viewModel.updateData(objectUser,it)
         }
-        viewModel.result().observe(viewLifecycleOwner){
-            if(it==true){
+
+        viewModel.result().observe(viewLifecycleOwner) {
+            if (it == true) {
                 viewModel.setUsername(objectUser.username.toString())
-                viewModel.getAllData(objectUser.username.toString())
-                Toast.makeText(requireActivity(),"Update Success", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(requireActivity(),"Update Failed", Toast.LENGTH_SHORT).show()
+          //      viewModel.getAllData(objectUser.username.toString())
+                Toast.makeText(requireActivity(), "Update Success", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireActivity(), "Update Failed", Toast.LENGTH_SHORT).show()
             }
         }
         setField()
     }
-
 
 
     private fun checkingPermissions() {
@@ -227,7 +226,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showPermissionDeniedDialog() {
-       AlertDialog.Builder(requireActivity())
+        AlertDialog.Builder(requireActivity())
             .setTitle("Permission Denied")
             .setMessage("Permission is denied, Please allow permissions from App Settings.")
             .setPositiveButton(
@@ -235,7 +234,7 @@ class ProfileFragment : Fragment() {
             ) { _, _ ->
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                val uri = Uri.fromParts("package", activity?.packageName,null )
+                val uri = Uri.fromParts("package", activity?.packageName, null)
                 intent.data = uri
                 startActivity(intent)
             }
@@ -262,12 +261,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun handleCameraImage(intent: Intent?) {
-       bitmap = intent?.extras?.get("data") as Bitmap
+        bitmap = intent?.extras?.get("data") as Bitmap
         val result = viewModel.bitmapToUri(bitmap!!)
-        imagepath=result.toString()
+        imagepath = result.toString()
         binding.profileImageView.setImageURI(imagepath!!.toUri())
-        Log.d("tesinggg",bitmap.toString())
+        Log.d("tesinggg", bitmap.toString())
     }
+
+
 
 
 }

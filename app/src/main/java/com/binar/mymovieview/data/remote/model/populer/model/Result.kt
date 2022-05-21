@@ -1,4 +1,4 @@
-package com.binar.mymovieview.response
+package com.binar.mymovieview.data.remote.model.populer.model
 
 
 import android.os.Parcelable
