@@ -82,7 +82,7 @@ class ProfileFragment : Fragment() {
 
         binding.updateButton.setOnClickListener {
             update()
-            Log.d("test","update test")
+            Log.d("test", "update test")
 
         }
         binding.profileImageView.setOnClickListener {
@@ -173,14 +173,14 @@ class ProfileFragment : Fragment() {
         )
 
 
-        viewModel.getEmail().observe(viewLifecycleOwner){
-            viewModel.updateData(objectUser,it)
+        viewModel.getEmail().observe(viewLifecycleOwner) {
+            viewModel.updateData(objectUser, it)
         }
 
         viewModel.result().observe(viewLifecycleOwner) {
             if (it == true) {
                 viewModel.setUsername(objectUser.username.toString())
-          //      viewModel.getAllData(objectUser.username.toString())
+                //      viewModel.getAllData(objectUser.username.toString())
                 Toast.makeText(requireActivity(), "Update Success", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireActivity(), "Update Failed", Toast.LENGTH_SHORT).show()
@@ -268,7 +268,11 @@ class ProfileFragment : Fragment() {
         Log.d("tesinggg", bitmap.toString())
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
 
 
+    }
 
 }

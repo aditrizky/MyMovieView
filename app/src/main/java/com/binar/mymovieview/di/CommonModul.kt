@@ -45,11 +45,14 @@ val networkModul = module {
                 .build()
             retrofit.create(ApiService::class.java)
         }
+
+
+
+}
+val moviesRemoteDataSourceModule= module {
     single {
         MoviesRemoteDataSource(get())
     }
-
-
 }
 
 val dataStoreModule= module {

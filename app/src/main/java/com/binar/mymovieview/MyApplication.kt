@@ -24,7 +24,8 @@ class MyApplication : Application() {
                     useCaseModule,
                     viewModelModule,
                     dataStoreModule,
-                    imageHelperModule
+                    imageHelperModule,
+                    moviesRemoteDataSourceModule
                 )
             )
         }
