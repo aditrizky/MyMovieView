@@ -39,7 +39,7 @@ class LoginViewModel(private val repository: UserRepository,private val dataStor
                         loginValidation.value = true
                         viewModelScope.launch {
                             dataStoreManager.setEmail(email)
-                           dataStoreManager.setUsername(result.username.toString())
+                           dataStoreManager.setUsername(usernameResult.toString())
                         }
 
                     }
